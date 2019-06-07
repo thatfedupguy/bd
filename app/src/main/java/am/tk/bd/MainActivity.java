@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     public static int count  = 0;
     FirebaseDatabase database;
     DatabaseReference myRef;
+    TextView tv_bin_code;
+    Button btn_verify;
+    Boolean isCorrect;
 
 
 
@@ -72,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         rv_lot = findViewById(R.id.rv_lot);
-
+        btn_verify = findViewById(R.id.btn_verify);
+        tv_bin_code = findViewById(R.id.tv_bin_code);
         Intent intent = getIntent();
+        isCorrect = intent.getBooleanExtra("isCorrect", false);
         lotNo = intent.getStringArrayListExtra("lots");
         Log.d(TAG, "onCreate: " + lotNo);
         database = FirebaseDatabase.getInstance();
@@ -91,48 +96,39 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager.VERTICAL,
                 false));
         rv_lot.setAdapter(lotAdapter);
+
 //        HashMap<String,String> hashMap = new HashMap<>();
 //        hashMap.put("sjhvbs","vsjdn");
-//        Orders order = new Orders("anfjfkn", "bsdbv", "nkjaj", "bvdbz","h",hashMap);
+//        Orders order = new Orders("anfjfkn", "bsdbv", "nkjaj", "00000032","h",hashMap);
 //        myRef.child("Person1").push().child("Orders").push().child("Order1").push().setValue(order);
-//        myRef.child("Person1").child("Orders").child("Order1").addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                Orders order = dataSnapshot.getValue(Orders.class);
-//                HashMap hashMap = order.getLots();
-//                Iterator hmIterator = hashMap.entrySet().iterator();
-//                while (hmIterator.hasNext()) {
-//                    Map.Entry mapElement = (Map.Entry)hmIterator.next();
-//                    Lot lot = new Lot(mapElement.getKey().toString(), mapElement.getValue().toString());
-//                    lots.add(lot);
-//                    lotAdapter.notifyDataSetChanged();
-//
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//
+        myRef.child("Person1").child("Orders").child("Order1").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Orders order = dataSnapshot.getValue(Orders.class);
+                tv_bin_code.setText(order.getBin_code());
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
 //
@@ -149,6 +145,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        btn_verify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, Main3Activity.class);
+                i.putExtra("binCode", tv_bin_code.getText().toString());
+                startActivity(i);
+            }
+        });
+
 
 
 
