@@ -1,11 +1,15 @@
 package am.tk.bd;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +42,7 @@ public class Main2Activity extends AppCompatActivity implements ZXingScannerView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+//        setContentView(R.layout.activity_main2);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         Intent i = getIntent();
@@ -49,9 +53,13 @@ public class Main2Activity extends AppCompatActivity implements ZXingScannerView
 
 
         scannerView = new ZXingScannerView(this);
-        setContentView(scannerView);
-        scannerView.setResultHandler(this);
-        scannerView.startCamera();
+
+
+            setContentView(scannerView);
+            scannerView.setResultHandler(this);
+            scannerView.startCamera();
+
+
 
     }
     @Override

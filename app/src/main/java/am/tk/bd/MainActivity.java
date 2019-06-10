@@ -1,5 +1,6 @@
 package am.tk.bd;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -139,10 +140,20 @@ public class MainActivity extends AppCompatActivity {
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, Main2Activity.class);
-                i.putExtra("lots", lotNo);
-                startActivity(i);
+                int perm =  ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.CAMERA
+                );
+                if( perm == PackageManager.PERMISSION_GRANTED){
+                    usnScanner();
 
+                }else{
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{
+                                    Manifest.permission.CAMERA
+                            }, 123
+                    );
+                    btn_next.callOnClick();
+                }
             }
         });
         btn_verify.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +168,11 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+    public void usnScanner(){
+        Intent i = new Intent(MainActivity.this, Main2Activity.class);
+        i.putExtra("lots", lotNo);
+        startActivity(i);
     }
 
     @Override
